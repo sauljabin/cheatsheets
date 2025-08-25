@@ -1,8 +1,11 @@
 ---
 tags: [ alias ]
 ---
-# To install this aliases run: 
+# To install this aliases run:
 # cheat alias > ~/.aliases && echo "source $HOME/.aliases" >> ~/.zshrc
+
+# To update this aliases run:
+# cd ~/.config/cheat/cheatsheets/personal && git pull && cd - && cheat alias > ~/.aliases
 
 # To get docker precesses:
 alias dps='docker ps --format "table{{.Names}}\t{{.Status}}\t{{.ID}}"'
@@ -61,7 +64,7 @@ wwfspec() {
 
 # To watch LittleHorse WfRuns:
 wwfrun() {
-	watch -ct 'echo "WFRUN $1" && lhctl search wfRun $1 | jq -r ".results[].id"'
+	watch -ct "echo 'WFRUN $1' && lhctl search wfRun $1 | jq -r '.results[].id'"
 }
 
 # To watch LittleHorse TaskDef:
