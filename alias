@@ -61,7 +61,7 @@ wwfspec() {
 
 # To watch LittleHorse WfRuns:
 wwfrun() {
-	watch -ct 'echo "WFRUN $1" && lhctl search wfRun --wfSpecName $1 | jq -r ".results[].id"'
+	watch -ct 'echo "WFRUN $1" && lhctl search wfRun $1 | jq -r ".results[].id"'
 }
 
 # To watch LittleHorse TaskDef:
