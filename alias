@@ -45,6 +45,9 @@ alias tree='eza --tree'
 alias kubectl="kubecolor"
 alias k="kubecolor"
 
+# To create a shortcut for minikube:
+alias mk="minikube"
+
 # To copy and paste:
 alias pbcopy="xsel --clipboard --input"
 alias pbpaste="xsel --clipboard --output"
