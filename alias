@@ -35,11 +35,11 @@ alias dir='basename $(pwd)'
 alias cd..='cd ..'
 
 # To improve ls command:
-alias ls='eza'
-alias la='eza --long --all --group'
+alias ls='eza --icons=always'
+alias la='eza --long --all --group --icons=always'
 
 # To improve tree command:
-alias tree='eza --tree'
+alias tree='eza --tree --icons=always'
 
 # To add color to kubectl:
 alias kubectl="kubecolor"
