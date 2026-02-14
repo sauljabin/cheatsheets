@@ -55,6 +55,9 @@ alias pbpaste="xsel --clipboard --output"
 # To simplify lhctl:
 alias lh="lhctl"
 
+# To generate random uuid:
+alias uuidgen='uuidgen | tr "[:upper:]" "[:lower:]"'
+
 # To watch disk usage:
 wdisk() {
     watch -tc 'df -H | grep -vE "(tmpfs|loop|udev)"'
