@@ -1,99 +1,78 @@
 ---
-tags: [ tmux ]
+syntax: bash
+tags: [tmux, terminal]
 ---
-# To install tmux:
+# To install tmux on macOS or Linux with Homebrew:
+brew install tmux
+
+# To install tmux on Debian or Ubuntu:
 sudo apt install tmux
-vim ~/.zshrc
 
-  and add some configurations at the begining of the file:
+# To automatically attach to tmux from an interactive Zsh shell, add to ~/.zshrc:
+[[ -o interactive ]] && [[ "$TERM_PROGRAM" != "vscode" ]] && \
+    [[ "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" ]] && \
+    [[ "$TERM" != "screen" ]] && [[ -z "$TMUX" ]] && \
+    { tmux attach-session || exec tmux new-session; }
 
-[[ "$TERM_PROGRAM" != "vscode" ]] && [[ "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" ]] && [[ "$TERM" != "screen" ]] && [[ -z "$TMUX" ]] && { tmux attach || exec tmux new-session && exit; }
-export TERM="xterm-256color"
+# To install the tmux plugin manager:
+git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
 
-# To install plugins:
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-vim ~/.tmux.conf
-
-  add some configurations:
-
+# Add the following configuration to ~/.tmux.conf:
 set -g prefix C-Space
-set -g default-shell /bin/zsh
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'jimeh/tmux-themepack'
 set -g @themepack 'powerline/default/cyan'
 run -b '~/.tmux/plugins/tpm/tpm'
 
-  restart terminal and activate them using next command:
+# To reload the tmux configuration:
+tmux source-file "$HOME/.tmux.conf"
 
-tmux source ~/.tmux.conf
-
-  and use next shortcuts combination:
-
+# To install configured plugins after starting tmux:
 Ctrl-Space + I
 
-# To split horizontal:
+# To split a pane horizontally or vertically:
 Ctrl-Space + "
-
-# To split vertical:
 Ctrl-Space + %
 
-# To move between panels:
+# To move between panes or resize a pane:
 Ctrl-Space + arrows
-
-# To change panel size:
 Ctrl-Space + Ctrl-arrows
 
-# To close panel:
+# To close a pane:
 Ctrl-Space + x
-
-  or 
-
+# Alternatively, exit its shell:
 Ctrl + d
 
-# To zoom in or out over a panel:
+# To toggle pane zoom:
 Ctrl-Space + z
 
-# To activate copy mode (activate mouse scroll):
+# To enter or leave copy mode:
 Ctrl-Space + [
-
-# To close copy mode:
 Ctrl + c
 
-# To create new window:
+# To create a window or move between windows:
 Ctrl-Space + c
-
-# To move to previous window:
 Ctrl-Space + p
-
-# To move to next window:
 Ctrl-Space + n
-
-# To move to specific window:
 Ctrl-Space + 0-9
-
-# To show windows menu:
 Ctrl-Space + w
 
-# To kill window (also killing all panels):
+# To kill a window from the command prompt:
 Ctrl-Space + :
-kill-w -t <0-9>
+kill-window -t <window>
 
-# To create a new session:
+# To create a new session from the command prompt:
 Ctrl-Space + :
-new-s
+new-session
 
-# To kill session:
+# To kill a session from the command prompt:
 Ctrl-Space + :
-kill-ses -t 0-9
+kill-session -t <session>
 
-# To move to previous session:
+# To move between or list sessions:
 Ctrl-Space + (
-
-# To move to next session:
 Ctrl-Space + )
-
-# To show sessions:
 Ctrl-Space + s
 
-# To kill all:
+# To stop the tmux server and all its sessions (destructive):
 tmux kill-server

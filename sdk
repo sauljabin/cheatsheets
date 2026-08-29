@@ -1,23 +1,30 @@
 ---
-tags: [ packaging ]
+syntax: bash
+tags: [packaging, sdkman]
 ---
-# To install sdk:
+# To install SDKMAN on macOS or Linux with Bash:
 curl -s "https://get.sdkman.io" | bash
 
-# To list available sdks:
+# To load SDKMAN without restarting the shell:
+source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+# To verify SDKMAN:
+sdk version
+
+# To list available SDKs:
 sdk list
 
-# To list available sdk versions:
+# To list available versions of an SDK:
 sdk list <sdk>
 
-# To see current installed sdks:
+# To show currently selected SDK versions:
 sdk current
 
-# To install sdk:
+# To install an SDK version:
 sdk install <sdk> <version>
 
-# To use sdk version:
+# To use an SDK version in the current shell:
 sdk use <sdk> <version>
 
-# To set a sdk version permanently:
+# To set the default SDK version:
 sdk default <sdk> <version>

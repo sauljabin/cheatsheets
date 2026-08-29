@@ -1,11 +1,19 @@
 ---
-tags: [ packaging ]
+syntax: bash
+tags: [packaging, macos, linux]
 ---
-# To install brew:
+# To install Homebrew on macOS or Linux:
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-# To add repository:
-brew tap homebrew/cask-font
+# To add a third-party formula repository:
+brew tap <owner>/<repository>
 
-# To remove repository:
-brew untap homebrew/cask-fonts
+# To remove a third-party formula repository:
+brew untap <owner>/<repository>
+
+# To update Homebrew and installed packages:
+brew update
+brew upgrade
+
+# To diagnose common Homebrew problems:
+brew doctor

@@ -1,84 +1,253 @@
 ---
-tags: [ alias ]
+syntax: bash
+tags: [alias, shell]
 ---
-# To install this aliases run:
-# cheat alias > ~/.aliases && echo "source $HOME/.aliases" >> ~/.zshrc
+# To install these aliases for Bash or Zsh:
+# cheat alias > "$HOME/.aliases"
 
-# To update this aliases run:
-# cd ~/.config/cheat/cheatsheets/personal && git pull && cd - && cheat alias > ~/.aliases
+# Then add this line to ~/.bashrc or ~/.zshrc:
+# source "$HOME/.aliases"
 
-# To get docker precesses:
-alias dps='docker ps --format "table{{.Names}}\t{{.Status}}\t{{.ID}}"'
+# To update these aliases:
+# git -C "$HOME/.config/cheat/cheatsheets/personal" pull --ff-only
+# cheat alias > "$HOME/.aliases"
 
-# To get docker processes including the stopped ones:
-alias dpa='docker ps -a --format "table{{.Names}}\t{{.Status}}\t{{.ID}}"'
+# To list Docker processes:
+alias dps='docker ps --format "table {{.Names}}\t{{.Status}}\t{{.ID}}"'
 
-# To list docker volumes:
+# To list Docker processes, including stopped containers:
+alias dpa='docker ps -a --format "table {{.Names}}\t{{.Status}}\t{{.ID}}"'
+
+# To list Docker volumes:
 alias dvl='docker volume ls'
 
-# To list docker images:
-alias dim='docker images --format "table{{.Repository}}:{{.Tag}}\t{{.Size}}"'
+# To list Docker images with repository, tag, and size:
+alias dim='docker images --format "table {{.Repository}}:{{.Tag}}\t{{.Size}}"'
 
-# To get available ram:
-alias ram="free -h --giga | awk 'FNR==2{print \$7}'"
+# To start Docker Compose services in the background:
+alias dcup='docker compose up -d'
 
-# To get public ip:
-alias publicip='curl checkip.amazonaws.com'
+# To stop and remove Docker Compose services:
+alias dcdown='docker compose down'
 
-# To kill processes using port:
-alias killport='fuser -v -n tcp -k '
+# To follow Docker Compose service logs:
+alias dclogs='docker compose logs --follow'
 
-# To get current directory:
-alias dir='basename $(pwd)'
+# To display available memory on macOS or Linux:
+ram() {
+    case "$(uname -s)" in
+        Darwin)
+            vm_stat | awk '
+                /page size of/ { page_size = $8 }
+                /Pages free:/ { gsub(/\./, "", $3); free_pages = $3 }
+                /Pages inactive:/ { gsub(/\./, "", $3); inactive_pages = $3 }
+                /Pages speculative:/ { gsub(/\./, "", $3); speculative_pages = $3 }
+                /Pages purgeable:/ { gsub(/\./, "", $3); purgeable_pages = $3 }
+                END {
+                    available = (free_pages + inactive_pages + speculative_pages + purgeable_pages) * page_size
+                    printf "%.1f GiB available\n", available / 1073741824
+                }'
+            ;;
+        Linux)
+            free -h | awk '/^Mem:/ { print $7 " available" }'
+            ;;
+        *)
+            printf 'ram: unsupported operating system\n' >&2
+            return 1
+            ;;
+    esac
+}
 
-# To go up:
+# To get the public IP address:
+alias publicip='curl -fsS https://checkip.amazonaws.com'
+
+# To terminate the process listening on a TCP port (requires lsof):
+killport() {
+    if [ "$#" -ne 1 ]; then
+        printf 'usage: killport <port>\n' >&2
+        return 2
+    fi
+    if ! command -v lsof >/dev/null 2>&1; then
+        printf 'killport: lsof is required\n' >&2
+        return 127
+    fi
+
+    local pids
+    pids="$(lsof -tiTCP:"$1" -sTCP:LISTEN)"
+    if [ -z "$pids" ]; then
+        printf 'killport: no process is listening on port %s\n' "$1" >&2
+        return 1
+    fi
+    printf '%s\n' "$pids" | xargs kill
+}
+
+# To print the current directory name:
+dir() {
+    basename "$PWD"
+}
+
+# To go up one directory:
 alias cd..='cd ..'
 
-# To improve ls command:
-alias ls='eza --icons=always'
-alias la='eza --long --all --group --icons=always'
+# To use eza when installed, with a portable fallback for la:
+if command -v eza >/dev/null 2>&1; then
+    # To list directory contents with icons:
+    alias ls='eza --icons=always'
 
-# To improve tree command:
-alias tree='eza --tree --icons=always'
+    # To list all directory contents with details and icons:
+    alias la='eza --long --all --group --icons=always'
 
-# To add color to kubectl:
-alias kubectl="kubecolor"
-alias k="kubecolor"
+    # To display a directory tree with icons:
+    alias tree='eza --tree --icons=always'
+else
+    # To list all directory contents with details when eza is unavailable:
+    alias la='ls -la'
+fi
+
+# To color kubectl output when kubecolor is installed:
+if command -v kubecolor >/dev/null 2>&1; then
+    # To replace kubectl with colorized kubectl output:
+    alias kubectl='kubecolor'
+
+    # To run colorized kubectl with a short command:
+    alias k='kubecolor'
+else
+    # To run kubectl with a short command when kubecolor is unavailable:
+    alias k='kubectl'
+fi
+
+# To list Kubernetes contexts:
+alias kctxs='kubectl config get-contexts'
+
+# To list Kubernetes pods:
+alias kgp='kubectl get pods'
+
+# To list Kubernetes services:
+alias kgs='kubectl get services'
+
+# To list Kubernetes nodes:
+alias kgn='kubectl get nodes'
+
+# To show the current context or switch to a supplied context:
+kctx() {
+    if [ "$#" -eq 0 ]; then
+        kubectl config current-context
+    else
+        kubectl config use-context "$1"
+    fi
+}
+
+# To set the namespace on the current context:
+kns() {
+    if [ "$#" -ne 1 ]; then
+        printf 'usage: kns <namespace>\n' >&2
+        return 2
+    fi
+    kubectl config set-context --current --namespace="$1"
+}
 
 # To create a shortcut for minikube:
-alias mk="minikube"
+alias mk='minikube'
 
-# To copy and paste:
-alias pbcopy="xsel --clipboard --input"
-alias pbpaste="xsel --clipboard --output"
+# To provide pbcopy and pbpaste names on Linux without replacing macOS tools:
+if ! command -v pbcopy >/dev/null 2>&1 || ! command -v pbpaste >/dev/null 2>&1; then
+    if command -v wl-copy >/dev/null 2>&1 && command -v wl-paste >/dev/null 2>&1; then
+        # To copy standard input to the Wayland clipboard:
+        alias pbcopy='wl-copy'
+
+        # To print the Wayland clipboard contents:
+        alias pbpaste='wl-paste'
+    elif command -v xclip >/dev/null 2>&1; then
+        # To copy standard input to the X11 clipboard with xclip:
+        alias pbcopy='xclip -selection clipboard'
+
+        # To print the X11 clipboard contents with xclip:
+        alias pbpaste='xclip -selection clipboard -o'
+    elif command -v xsel >/dev/null 2>&1; then
+        # To copy standard input to the X11 clipboard with xsel:
+        alias pbcopy='xsel --clipboard --input'
+
+        # To print the X11 clipboard contents with xsel:
+        alias pbpaste='xsel --clipboard --output'
+    fi
+fi
 
 # To simplify lhctl:
-alias lh="lhctl"
+alias lh='lhctl'
 
-# To generate random uuid:
-alias uuidgen='uuidgen | tr "[:upper:]" "[:lower:]"'
+# To generate a lowercase UUID without replacing the system uuidgen command:
+alias uuid='uuidgen | tr "[:upper:]" "[:lower:]"'
+
+# To show concise Git repository and branch status:
+alias gst='git status --short --branch'
+
+# To show a compact graph of all Git branches:
+alias glog='git log --oneline --graph --decorate --all'
+
+# To show the active AWS account, user, or role identity:
+alias awswho='aws sts get-caller-identity'
+
+# To create a directory and enter it:
+mkcd() {
+    if [ "$#" -ne 1 ]; then
+        printf 'usage: mkcd <directory>\n' >&2
+        return 2
+    fi
+    mkdir -p "$1" && cd "$1"
+}
+
+# To list listening TCP ports (requires lsof):
+ports() {
+    if ! command -v lsof >/dev/null 2>&1; then
+        printf 'ports: lsof is required\n' >&2
+        return 127
+    fi
+    lsof -nP -iTCP -sTCP:LISTEN
+}
+
+_require_watch() {
+    if ! command -v watch >/dev/null 2>&1; then
+        printf 'watch is required (install it with: brew install watch)\n' >&2
+        return 127
+    fi
+}
 
 # To watch disk usage:
 wdisk() {
+    _require_watch || return
     watch -tc 'df -H | grep -vE "(tmpfs|loop|udev)"'
 }
 
 # To watch LittleHorse WfSpecs:
 wwfspec() {
-	watch -ct 'echo "WORKFLOWS" && lhctl search wfSpec | jq -r ".results[] | .name + ''\" v\"'' + (.majorVersion|tostring)+''\".\"''+(.revision|tostring)"'
+    _require_watch || return
+    watch -ct 'printf "WORKFLOWS\n" && lhctl search wfSpec | jq -r '\''.results[] | .name + " v" + (.majorVersion | tostring) + "." + (.revision | tostring)'\'''
 }
 
 # To watch LittleHorse WfRuns:
 wwfrun() {
-	watch -ct "echo 'WFRUN $1' && lhctl search wfRun $1 | jq -r '.results[].id'"
+    if [ "$#" -ne 1 ]; then
+        printf 'usage: wwfrun <wf-run-id>\n' >&2
+        return 2
+    fi
+    case "$1" in
+        *[!A-Za-z0-9._:-]*)
+            printf 'wwfrun: invalid workflow run ID\n' >&2
+            return 2
+            ;;
+    esac
+    _require_watch || return
+    watch -ct "printf 'WFRUN %s\\n' '$1' && lhctl search wfRun '$1' | jq -r '.results[].id'"
 }
 
-# To watch LittleHorse TaskDef:
+# To watch LittleHorse TaskDefs:
 wtaskdef() {
-	watch -ct 'echo "TASKS" && lhctl search taskDef | jq -r ".results[].name"'
+    _require_watch || return
+    watch -ct 'printf "TASKS\n" && lhctl search taskDef | jq -r '\''.results[].name'\'''
 }
 
-# To watch docker precesses:
+# To watch Docker processes:
 wdps() {
-	watch -ct 'docker ps --format "table{{.Names}}\t{{.Status}}\t{{.ID}}"'
+    _require_watch || return
+    watch -ct 'docker ps --format "table {{.Names}}\t{{.Status}}\t{{.ID}}"'
 }

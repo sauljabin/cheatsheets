@@ -1,8 +1,23 @@
 ---
-tags: [ util, usb, iso ]
+syntax: bash
+tags: [util, usb, iso]
 ---
-# To list disks:
+# WARNING: dd overwrites its output device. Verify the device identifier first.
+
+# To list external disks on macOS:
+diskutil list external physical
+
+# To unmount a target disk on macOS before writing:
+diskutil unmountDisk /dev/disk<N>
+
+# To write an ISO on macOS (use Ctrl-T to display progress):
+sudo dd if=<image.iso> of=/dev/rdisk<N> bs=4m conv=fsync
+
+# To eject the disk on macOS after dd finishes:
+diskutil eject /dev/disk<N>
+
+# To list block devices on Linux:
 lsblk
 
-# To burn an iso:
-sudo dd bs=1M oflag=sync status=progress if=ubuntu-24.04-desktop-amd64.iso of=/dev/<name>
+# To write an ISO on Linux:
+sudo dd if=<image.iso> of=/dev/<device> bs=4M conv=fsync status=progress

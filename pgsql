@@ -1,41 +1,42 @@
 ---
-tags: [ database ]
+syntax: bash
+tags: [database, postgresql]
 ---
-# To show help options:
-pg_dump -?
-pg_restore -?
-psql -?
+# To show help:
+pg_dump --help
+pg_restore --help
+psql --help
 
 # To list databases:
-psql -l
+psql --list
 
-# To show all settings:
-psql -c 'show all'
+# To show all server settings:
+psql --command='SHOW ALL'
 
-# To backup:
-pg_dump -i -h <hostname> -p <port> -U <user> -F c -b -v -f <backup-path> <database>
+# To create a compressed custom-format backup:
+pg_dump --host=<hostname> --port=<port> --username=<user> \
+    --format=custom --large-objects --verbose \
+    --file=<backup-path> <database>
 
--p, --port=PORT database server port number
--i, --ignore-version proceed even when server version mismatches
--h, --host=HOSTNAME database server host or socket directory
--U, --username=NAME connect as specified database user
--W, --password force password prompt (should happen automatically)
--d, --dbname=NAME connect to database name
--v, --verbose verbose mode
--F, --format=c|t|p output file format (custom, tar, plain text)
--c, --clean clean (drop) schema prior to create
--b, --blobs include large objects in dump
--v, --verbose verbose mode
--f, --file=FILENAME output file name
+# To inspect the contents of a custom-format backup:
+pg_restore --list <backup-path>
 
-# To restore:
-pg_restore -i -v -h <hostname> -p <port> -U <user> -d <database> <backup-path>
+# To restore a custom-format backup into an existing database:
+pg_restore --host=<hostname> --port=<port> --username=<user> \
+    --dbname=<database> --verbose --exit-on-error <backup-path>
 
--p, --port=PORT database server port number
--i, --ignore-version proceed even when server version mismatches
--h, --host=HOSTNAME database server host or socket directory
--U, --username=NAME connect as specified database user
--W, --password force password prompt (should happen automatically)
--d, --dbname=NAME connect to database name
--v, --verbose verbose mode
--C, --create Create database
+# Common connection options:
+# -h, --host=HOSTNAME       database server host or socket directory
+# -p, --port=PORT           database server port number
+# -U, --username=NAME       connect as the specified database user
+# -W, --password            force a password prompt
+# -d, --dbname=NAME         connect to this database
+
+# Common backup and restore options:
+# -F, --format=c|d|t|p      custom, directory, tar, or plain format (pg_dump)
+# -f, --file=FILENAME       output file or directory
+# -b, --large-objects       include large objects (pg_dump)
+# -c, --clean               drop database objects before recreating them
+# -C, --create              include/create the database itself
+# -j, --jobs=NUM            run parallel jobs (directory dump or restore)
+# -v, --verbose             verbose output

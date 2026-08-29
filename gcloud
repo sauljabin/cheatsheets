@@ -1,0 +1,46 @@
+---
+syntax: bash
+tags: [gcloud, gcp, cloud, kubernetes]
+---
+# To install the gcloud CLI with Homebrew on macOS:
+brew install --cask gcloud-cli
+
+# To initialize the gcloud CLI:
+gcloud init
+
+# To log in and list authenticated accounts:
+gcloud auth login
+gcloud auth list
+
+# To create local Application Default Credentials for development:
+gcloud auth application-default login
+
+# To list projects and set the default project:
+gcloud projects list
+gcloud config set project <project>
+
+# To show the active configuration:
+gcloud config list
+
+# To manage named configurations:
+gcloud config configurations list
+gcloud config configurations create <configuration>
+gcloud config configurations activate <configuration>
+
+# To list GKE clusters in a project:
+gcloud container clusters list --project=<project>
+
+# To configure kubectl for a regional GKE cluster:
+gcloud container clusters get-credentials <cluster> \
+    --region us-central1 --project <project>
+
+# To configure kubectl using the preferred location flag (region or zone):
+gcloud container clusters get-credentials <cluster> \
+    --location=<region-or-zone> --project=<project>
+
+# To configure kubectl for a zonal GKE cluster:
+gcloud container clusters get-credentials <cluster> \
+    --zone=<zone> --project=<project>
+
+# To configure Docker authentication for Artifact Registry:
+gcloud auth configure-docker <region>-docker.pkg.dev

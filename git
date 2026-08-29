@@ -1,11 +1,12 @@
 ---
-tags: [ vcs ]
+syntax: bash
+tags: [vcs]
 ---
-# To amend author from commit:
-git rebase -i <hash-commit> -x "git commit --amend --reset-author -CHEAD"
+# To amend the author from a commit onward (rewrites history):
+git rebase -i <commit>^ --exec "git commit --amend --reset-author -C HEAD"
 
-# To find a file in the history:
-git log --all --full-history --patch -- "**/*<key word>*"
+# To find a file in history by a path fragment:
+git log --all --full-history --patch -- '**/*<keyword>*'
 
-# To restore a deleted file:
-git checkout <hash-commit where was deleted>^ -- <file path>
+# To restore a file deleted by a commit:
+git restore --source=<deleting-commit>^ -- <file-path>

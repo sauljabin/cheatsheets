@@ -1,7 +1,8 @@
 ---
-tags: [ kafka ]
+syntax: bash
+tags: [kafka]
 ---
-# To install cli tools:
+# To install CLI tools with Homebrew on macOS or Linux:
 brew install kafka
 
 # To create a topic:
@@ -17,7 +18,7 @@ kafka-topics --delete --bootstrap-server <server> \
 # To list topics:
 kafka-topics --bootstrap-server <server> --list
 
-# To list Groups:
+# To list consumer groups:
 kafka-consumer-groups --bootstrap-server <server> --list
 
 # To delete group:

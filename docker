@@ -1,19 +1,20 @@
 ---
-tags: [ docker ]
+syntax: bash
+tags: [docker]
 ---
-# To remove all images:
+# To remove all images (destructive):
 docker rmi -f $(docker images -aq)
 
-# To remove all volumes:
+# To remove all volumes (destructive):
 docker volume rm $(docker volume ls -q)
 
 # To stop all containers:
 docker stop $(docker ps -aq)
 
-# To remove all stopped containers:
+# To remove all stopped containers (destructive):
 docker rm -f $(docker ps -aq)
 
-# To prune whole system:
+# To prune the whole system, including unused volumes (destructive):
 docker system prune -af --volumes
 
 # To start a container with volume and variable:

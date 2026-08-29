@@ -1,11 +1,49 @@
 ---
-tags: [ aws ]
+syntax: bash
+tags: [aws, cloud]
 ---
-# To config a kubernetes cluster:
-aws eks update-kubeconfig --name <cluster name> --alias <context alias>
+# To list configured AWS profiles:
+aws configure list-profiles
 
-# To login in the public ECR registry:
-aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
+# To show the active AWS identity:
+aws sts get-caller-identity
 
-# To login in a private ECR:
-aws ecr get-login-password --region <region> | docker login --username AWS --password-stdin <aws account id>.dkr.ecr.<region>.amazonaws.com
+# To configure kubectl for an EKS cluster:
+aws eks update-kubeconfig --name <cluster> --region <region> --alias <context>
+
+# To log in to the public ECR registry:
+aws ecr-public get-login-password --region us-east-1 | \
+    docker login --username AWS --password-stdin public.ecr.aws
+
+# To log in to a private ECR registry:
+aws ecr get-login-password --region <region> | \
+    docker login --username AWS --password-stdin \
+    <aws-account-id>.dkr.ecr.<region>.amazonaws.com
+
+# To install AWS Vault with Homebrew on macOS or Linux:
+brew install aws-vault
+
+# To securely add long-lived credentials for a profile:
+aws-vault add <profile>
+
+# To list AWS Vault profiles and sessions:
+aws-vault list
+
+# To run one command with temporary credentials:
+aws-vault exec <profile> -- aws sts get-caller-identity
+
+# To start a subshell with temporary credentials (run exit when finished):
+aws-vault exec <profile>
+
+# To open the AWS Console for a profile:
+aws-vault login <profile>
+
+# To configure kubectl for EKS using an AWS Vault profile:
+aws-vault exec <profile> -- aws eks update-kubeconfig \
+    --name <cluster> --region <region> --alias <context>
+
+# To clear cached temporary credentials for a profile:
+aws-vault clear <profile>
+
+# To remove stored credentials from AWS Vault (destructive):
+aws-vault remove <profile>

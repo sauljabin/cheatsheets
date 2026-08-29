@@ -1,0 +1,122 @@
+---
+syntax: bash
+tags: [littlehorse, workflow, cli]
+---
+# To install lhctl with Homebrew on macOS or Linux:
+brew install littlehorse-enterprises/lh/lhctl
+
+# To show client and server versions:
+lhctl version
+
+# To show the current authenticated principal and verify connectivity:
+lhctl whoami
+
+# To authenticate with OAuth2:
+lhctl login
+
+# To use a non-default LittleHorse configuration file:
+lhctl --configFile <config-file> whoami
+
+# To load shell completions for the current Zsh or Bash session:
+source <(lhctl completion zsh)
+source <(lhctl completion bash)
+
+# To list all workflow specifications:
+lhctl search wfSpec
+
+# To search for workflow specifications by name prefix:
+lhctl search wfSpec --prefix <prefix>
+
+# To get the latest version of a workflow specification:
+lhctl get wfSpec <wf-spec>
+
+# To get a specific workflow specification version:
+lhctl get wfSpec <wf-spec> --majorVersion <major-version> --revision <revision>
+
+# To list TaskDefs, optionally filtering by name prefix:
+lhctl search taskDef
+lhctl search taskDef <prefix>
+
+# To get a TaskDef:
+lhctl get taskDef <task-def>
+
+# To deploy resource definitions from JSON files:
+lhctl deploy taskDef <task-def.json>
+lhctl deploy externalEventDef <external-event-def.json>
+lhctl deploy wfSpec <wf-spec.json>
+
+# To deploy a resource definition from a protobuf file:
+lhctl deploy wfSpec <wf-spec.pb> --proto
+
+# To run a workflow with input variable name/value pairs:
+lhctl run <wf-spec> <variable-name> '<variable-value>'
+
+# To run a specific WfSpec version with an idempotent WfRun ID:
+lhctl run <wf-spec> --majorVersion <major-version> --revision <revision> \
+    --wfRunId <wf-run-id> <variable-name> '<variable-value>'
+
+# To search for WfRuns from a workflow specification:
+lhctl search wfRun <wf-spec>
+
+# To search recent WfRuns by status:
+lhctl search wfRun <wf-spec> --status <status> --earliestMinutesAgo <minutes>
+
+# To search for child WfRuns by parent WfRun ID:
+lhctl search wfRun byParent <parent-wf-run-id>
+
+# To get a WfRun:
+lhctl get wfRun <wf-run-id>
+
+# To list the NodeRuns, TaskRuns, variables, and events for a WfRun:
+lhctl list nodeRun <wf-run-id>
+lhctl list taskRun <wf-run-id>
+lhctl list variable <wf-run-id>
+lhctl list externalEvent <wf-run-id>
+lhctl list workflowEvent <wf-run-id>
+
+# To get one NodeRun by its position:
+lhctl get nodeRun <wf-run-id> <thread-run-number> <node-run-position>
+
+# To get one workflow variable:
+lhctl get variable <wf-run-id> <thread-run-number> <variable-name>
+
+# To find failed TaskRuns for a TaskDef:
+lhctl search taskRun <task-def> --status TASK_FAILED
+
+# To find Task NodeRuns in the ERROR state:
+lhctl search nodeRun TASK ERROR
+
+# To count scheduled TaskRuns for a TaskDef:
+lhctl count taskRun <task-def> --status TASK_SCHEDULED
+
+# To post an ExternalEvent directly to a WfRun:
+lhctl postEvent <wf-run-id> <external-event-name> <variable-type> '<payload>'
+
+# To post a boolean ExternalEvent directly to a WfRun:
+lhctl postEvent <wf-run-id> <external-event-name> BOOL true
+
+# To create a correlated event that can be matched by a workflow:
+lhctl put correlatedEvent <correlation-key> <external-event-name> BOOL true
+
+# To stop or resume a WfRun:
+lhctl stop wfRun <wf-run-id>
+lhctl resume wfRun <wf-run-id>
+
+# To retry the failed node in a ThreadRun:
+lhctl rescue <wf-run-id> <thread-run-number>
+
+# To skip the failed node and continue a ThreadRun:
+lhctl rescue <wf-run-id> <thread-run-number> --skipCurrentNode
+
+# To schedule a recurring WfRun:
+lhctl schedule run '<cron-expression>' <wf-spec> \
+    <variable-name> '<variable-value>'
+
+# To list schedules for a WfSpec:
+lhctl search schedule <wf-spec>
+
+# To delete a schedule (destructive):
+lhctl delete schedule <schedule-id>
+
+# To delete a WfRun (destructive):
+lhctl delete wfRun <wf-run-id>

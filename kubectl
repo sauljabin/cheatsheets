@@ -1,0 +1,73 @@
+---
+syntax: bash
+tags: [kubernetes, kubectl]
+---
+# To install kubectl with Homebrew on macOS or Linux:
+brew install kubectl
+
+# To show cluster information:
+kubectl cluster-info
+
+# To list contexts:
+kubectl config get-contexts
+
+# To print only context names:
+kubectl config get-contexts -o name
+
+# To show the current context:
+kubectl config current-context
+
+# To switch contexts:
+kubectl config use-context <context>
+
+# To rename a context:
+kubectl config rename-context <old-context> <new-context>
+
+# To delete a context from kubeconfig (destructive):
+kubectl config delete-context <context>
+
+# To set the default namespace for the current context:
+kubectl config set-context --current --namespace=<namespace>
+
+# To view the active, merged kubeconfig without exposing raw credentials:
+kubectl config view --minify
+
+# To list supported API resources and their short names:
+kubectl api-resources
+
+# To list common resources in all namespaces:
+kubectl get pods,services,deployments --all-namespaces
+
+# To watch pods in a namespace:
+kubectl get pods --namespace=<namespace> --watch
+
+# To describe a resource:
+kubectl describe <resource-type> <name> --namespace=<namespace>
+
+# To stream container logs:
+kubectl logs --follow <pod> --container=<container> --namespace=<namespace>
+
+# To open an interactive shell in a container:
+kubectl exec --stdin --tty <pod> --container=<container> \
+    --namespace=<namespace> -- /bin/sh
+
+# To forward a local port to a pod:
+kubectl port-forward pod/<pod> <local-port>:<pod-port> --namespace=<namespace>
+
+# To preview changes before applying a manifest:
+kubectl diff --filename=<manifest.yaml>
+
+# To apply a manifest:
+kubectl apply --filename=<manifest.yaml>
+
+# To restart a deployment and wait for the rollout:
+kubectl rollout restart deployment/<deployment> --namespace=<namespace>
+kubectl rollout status deployment/<deployment> --namespace=<namespace>
+
+# To inspect rollout history or undo the latest rollout:
+kubectl rollout history deployment/<deployment> --namespace=<namespace>
+kubectl rollout undo deployment/<deployment> --namespace=<namespace>
+
+# To show pod and node resource usage (requires Metrics Server):
+kubectl top pods --namespace=<namespace>
+kubectl top nodes
