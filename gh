@@ -1,0 +1,74 @@
+---
+syntax: bash
+tags: [github, vcs]
+---
+# To install the GitHub CLI with Homebrew on macOS or Linux:
+brew install gh
+
+# To authenticate with GitHub and check authentication status:
+gh auth login
+gh auth status
+
+# To clone a repository:
+gh repo clone <owner>/<repository>
+
+# To view repository details or open it in a browser:
+gh repo view
+gh repo view --web
+
+# To create a public repository and clone it locally:
+gh repo create <repository> --public --clone
+
+# To fork and clone a repository:
+gh repo fork <owner>/<repository> --clone
+
+# To synchronize a fork with its upstream repository:
+gh repo sync
+
+# To list and view pull requests:
+gh pr list
+gh pr view <number>
+gh pr view <number> --web
+
+# To create a pull request using commit information:
+gh pr create --fill
+
+# To check out a pull request:
+gh pr checkout <number>
+
+# To view a pull request diff and watch its checks:
+gh pr diff <number>
+gh pr checks <number> --watch
+
+# To squash-merge a pull request and delete its branch:
+gh pr merge <number> --squash --delete-branch
+
+# To list and view issues:
+gh issue list
+gh issue view <number>
+
+# To create or close an issue:
+gh issue create
+gh issue close <number>
+
+# To list workflows and run one manually:
+gh workflow list
+gh workflow run <workflow> --ref <branch>
+
+# To list recent workflow runs and watch one:
+gh run list
+gh run watch <run-id>
+
+# To view failed logs for a workflow run:
+gh run view <run-id> --log-failed
+
+# To list releases and create one with generated notes:
+gh release list
+gh release create <tag> --generate-notes
+
+# To call the GitHub API for the current repository:
+gh api repos/{owner}/{repo}
+
+# To list and create GitHub CLI aliases:
+gh alias list
+gh alias set <alias> '<gh-command>'
