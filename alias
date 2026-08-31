@@ -89,6 +89,9 @@ dir() {
 # To go up one directory:
 alias cd..='cd ..'
 
+# To open the current directory in Visual Studio Code:
+alias code.='code .'
+
 # To use eza when installed, with a portable fallback for la:
 if command -v eza >/dev/null 2>&1; then
     # To list directory contents with icons:
