@@ -2,6 +2,31 @@
 syntax: bash
 tags: [vcs]
 ---
+# To list linked worktrees:
+git worktree list
+
+# To create a worktree for an existing branch:
+git worktree add ../<directory> <branch>
+
+# To create a worktree and a new branch:
+git worktree add -b <new-branch> ../<directory> <start-point>
+
+# To move a worktree:
+git worktree move ../<directory> ../<new-directory>
+
+# To prevent or allow automatic pruning of a worktree:
+git worktree lock ../<directory>
+git worktree unlock ../<directory>
+
+# To remove a worktree:
+git worktree remove ../<directory>
+
+# To clean up stale worktree metadata:
+git worktree prune
+
+# To repair worktree metadata after moving a repository manually:
+git worktree repair
+
 # To amend the author from a commit onward (rewrites history):
 git rebase -i <commit>^ --exec "git commit --amend --reset-author -C HEAD"
 
