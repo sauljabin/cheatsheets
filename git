@@ -2,6 +2,9 @@
 syntax: bash
 tags: [vcs]
 ---
+# To install Git with Homebrew on macOS or Linux:
+brew install git
+
 # To list linked worktrees:
 git worktree list
 

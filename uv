@@ -1,0 +1,118 @@
+---
+syntax: bash
+tags: [uv, python, packaging]
+---
+# To install uv with Homebrew on macOS or Linux:
+brew install uv
+
+# To install uv with the standalone installer on macOS or Linux:
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# To show the installed uv version:
+uv --version
+
+# To create a new Python project:
+uv init <project>
+
+# To initialize the current directory as a Python project:
+uv init
+
+# To add a project dependency:
+uv add <package>
+
+# To add a development dependency:
+uv add --dev <package>
+
+# To remove a project dependency:
+uv remove <package>
+
+# To update the lockfile:
+uv lock
+
+# To upgrade all dependencies in the lockfile:
+uv lock --upgrade
+
+# To synchronize the project environment with the lockfile:
+uv sync
+
+# To show the project's dependency tree:
+uv tree
+
+# To run a command in the synchronized project environment:
+uv run <command>
+
+# To list available Python versions:
+uv python list
+
+# To list only installed Python versions:
+uv python list --only-installed
+
+# To install the latest Python version:
+uv python install
+
+# To install one or more specific Python versions:
+uv python install <version>
+uv python install <version> <version>
+
+# To install Python and provide unversioned python and python3 executables:
+uv python install <version> --default
+
+# To find a Python installation:
+uv python find <version>
+
+# To pin the current project to a Python version:
+uv python pin <version>
+
+# To show the Python version pinned for the current project:
+uv python pin
+
+# To upgrade uv-managed Python installations:
+uv python upgrade
+
+# To uninstall an uv-managed Python version (destructive):
+uv python uninstall <version>
+
+# To show the directory containing uv-managed Python installations:
+uv python dir
+
+# To add uv-managed Python executables to PATH:
+uv python update-shell
+
+# To create a virtual environment with the project's Python:
+uv venv
+
+# To create a virtual environment with a specific Python version:
+uv venv --python <version>
+
+# To activate the virtual environment on macOS or Linux:
+source .venv/bin/activate
+
+# To install a package into the active or local virtual environment:
+uv pip install <package>
+
+# To install packages from a requirements file:
+uv pip install --requirements requirements.txt
+
+# To synchronize a virtual environment with a requirements file:
+uv pip sync requirements.txt
+
+# To list packages installed in the virtual environment:
+uv pip list
+
+# To run Python in the project environment:
+uv run python
+
+# To run a Python script in the project environment:
+uv run python <script.py>
+
+# To run a Python command with a specific Python version:
+uv run --python <version> python <script.py>
+
+# To run a Python tool without installing it permanently:
+uvx <tool>
+
+# To install a Python tool globally in an isolated environment:
+uv tool install <tool>
+
+# To upgrade all installed Python tools:
+uv tool upgrade --all

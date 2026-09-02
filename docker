@@ -2,6 +2,12 @@
 syntax: bash
 tags: [docker]
 ---
+# To install Docker Desktop with Homebrew on macOS:
+brew install --cask docker-desktop
+
+# To install only the Docker CLI with Homebrew on macOS or Linux:
+brew install docker
+
 # To remove all images (destructive):
 docker rmi -f $(docker images -aq)
 

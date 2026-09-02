@@ -4,6 +4,9 @@ tags: [util, usb, iso]
 ---
 # WARNING: dd overwrites its output device. Verify the device identifier first.
 
+# To install GNU dd with Homebrew on macOS or Linux (the command is gdd):
+brew install coreutils
+
 # To list external disks on macOS:
 diskutil list external physical
 

@@ -2,6 +2,12 @@
 syntax: bash
 tags: [database, postgresql]
 ---
+# To install the PostgreSQL client tools with Homebrew on macOS or Linux:
+brew install libpq
+
+# To add the keg-only PostgreSQL client tools to PATH for the current shell:
+export PATH="$(brew --prefix libpq)/bin:$PATH"
+
 # To show help:
 pg_dump --help
 pg_restore --help

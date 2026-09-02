@@ -2,6 +2,9 @@
 syntax: bash
 tags: [aws, cloud]
 ---
+# To install the AWS CLI with Homebrew on macOS or Linux:
+brew install awscli
+
 # To list configured AWS profiles:
 aws configure list-profiles
 
