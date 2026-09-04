@@ -40,6 +40,13 @@ lhctl search taskDef <prefix>
 # To get a TaskDef:
 lhctl get taskDef <task-def>
 
+# To inspect the TaskWorkerGroup registered for a TaskDef:
+lhctl --configFile <config-file> get taskWorkerGroup <task-def>
+
+# Returns the group creation time, registered worker IDs, latest heartbeat times,
+# and the host and port advertised by each worker. Use the heartbeat age to spot
+# stale workers; an empty taskWorkers object means no workers are registered.
+
 # To deploy resource definitions from JSON files:
 lhctl deploy taskDef <task-def.json>
 lhctl deploy externalEventDef <external-event-def.json>
