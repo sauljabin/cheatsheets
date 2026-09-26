@@ -1,0 +1,50 @@
+---
+syntax: bash
+tags: [kafka, tui]
+---
+# Kaskade is a terminal UI for Kafka:
+# https://github.com/sauljabin/kaskade
+
+# To install Kaskade with Homebrew on macOS or Linux:
+brew install kaskade
+
+# To show the installed Kaskade version:
+kaskade --version
+
+# To open the admin mode (topics, partitions, consumer groups):
+kaskade admin -b localhost:9092
+
+# To open the admin mode with several bootstrap servers:
+kaskade admin -b <host1>:9092,<host2>:9092
+
+# To open the admin mode without auto-refresh:
+kaskade admin -b localhost:9092 --refresh-interval 0
+
+# To consume a topic:
+kaskade consumer -b localhost:9092 -t <topic>
+
+# To consume a topic from the earliest offsets with string keys and JSON values:
+kaskade consumer -b localhost:9092 -t <topic> --earliest -k string -v json
+
+# To consume one partition from a specific offset:
+kaskade consumer -b localhost:9092 -t <topic> --partition <partition>:<offset>
+
+# To consume a topic with Schema Registry deserialization:
+kaskade consumer -b localhost:9092 -t <topic> -v registry --registry url=http://localhost:8081
+
+# To show bytes values as hex:
+kaskade consumer -b localhost:9092 -t <topic> --bytes encoding=hex
+
+# To set a Kafka client property:
+kaskade admin -b localhost:9092 --kafka client.id=<client-id>
+
+# To connect with an INI file that has [kafka], [registry], [aws], and [timeouts] sections
+# (keep passwords here instead of on the command line):
+kaskade admin --config-file client.ini
+kaskade consumer --config-file client.ini -t <topic>
+
+# To connect to Amazon MSK with IAM authentication:
+kaskade admin -b <broker>:9098 --aws region=<region>
+
+# To change the theme:
+kaskade admin -b localhost:9092 --theme <theme>

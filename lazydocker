@@ -1,0 +1,37 @@
+---
+syntax: bash
+tags: [docker, tui]
+---
+# lazydocker is a terminal UI for Docker and Docker Compose:
+# https://github.com/jesseduffield/lazydocker
+
+# To install lazydocker with Homebrew on macOS or Linux:
+brew install lazydocker
+
+# To show the installed lazydocker version:
+lazydocker --version
+
+# To open lazydocker for the Docker Compose project in the current directory:
+lazydocker
+
+# To open lazydocker with alternate Compose files:
+lazydocker -f <compose.yaml> -f <compose.override.yaml>
+
+# To open lazydocker for a named Docker Compose project:
+lazydocker -p <project>
+
+# To print the current default configuration:
+lazydocker --config
+
+# Common keys inside lazydocker:
+#   ?           show keybindings for the focused panel
+#   tab         move to the next panel
+#   [ ]         switch between tabs in the main panel
+#   enter       focus the main panel
+#   x           open the menu of actions
+#   m           view container logs
+#   E           open a shell inside the selected container
+#   r           restart the selected container or service
+#   s           stop the selected container or service
+#   d           remove the selected container or service (destructive)
+#   q           quit

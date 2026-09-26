@@ -178,6 +178,12 @@ fi
 # To simplify lhctl:
 alias lh='lhctl'
 
+# To run Kantrip with a short command:
+alias knt='kantrip'
+
+# To run Kaskade with a short command:
+alias ksk='kaskade'
+
 # To generate a lowercase UUID without replacing the system uuidgen command:
 alias uuid='uuidgen | tr "[:upper:]" "[:lower:]"'
 

@@ -1,0 +1,51 @@
+---
+syntax: bash
+tags: [kubernetes, tui]
+---
+# k9s is a terminal UI for Kubernetes clusters:
+# https://github.com/derailed/k9s
+
+# To install k9s with Homebrew on macOS or Linux:
+brew install k9s
+
+# To show the installed k9s version:
+k9s version -s
+
+# To open k9s with the current kubeconfig context:
+k9s
+
+# To open k9s with a specific context:
+k9s --context <context>
+
+# To open k9s in a specific namespace:
+k9s -n <namespace>
+
+# To open k9s in all namespaces:
+k9s -A
+
+# To open k9s on a specific resource view:
+k9s -c <resource>
+
+# To open k9s in read-only mode:
+k9s --readonly
+
+# To show k9s configuration, log, and skin locations:
+k9s info
+
+# Common keys inside k9s:
+#   ?           show keybindings for the current view
+#   :<resource> jump to a resource view, for example :pods, :svc, or :deploy
+#   :ctx        list and switch contexts
+#   :ns         list and switch namespaces
+#   /<filter>   filter the current view
+#   esc         go back or clear the filter
+#   0           show all namespaces
+#   d           describe the selected resource
+#   y           show the selected resource as YAML
+#   e           edit the selected resource
+#   l           show logs for the selected pod or container
+#   s           open a shell in the selected container
+#   shift-f     port-forward the selected pod or container
+#   ctrl-d      delete the selected resource (destructive)
+#   ctrl-k      kill the selected pod (destructive)
+#   :q          quit
