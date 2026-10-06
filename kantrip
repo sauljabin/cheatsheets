@@ -1,0 +1,77 @@
+---
+syntax: bash
+tags: [kafka]
+---
+# Kantrip stores Kafka connection profiles and runs clients with them:
+# https://github.com/sauljabin/kantrip
+
+# To install Kantrip with pipx:
+pipx install kantrip
+
+# To show the installed Kantrip version:
+kantrip --version
+
+# To add the short name kan as a symlink (aliases don't work inside sessions):
+ln -s "$(command -v kantrip)" ~/.local/bin/kan
+
+# To add a profile for a local plaintext cluster (defaults to localhost:9092):
+kantrip add local
+
+# To add a profile with several brokers, a description, and a label:
+kantrip add <profile> -b <host1>:9092,<host2>:9092 -d "<description>" -l env=<env>
+
+# To add a profile with TLS and SCRAM (prompts for the password):
+kantrip add <profile> -b <host>:9093 --ca-file ca.pem --auth scram-sha-512 --username <user>
+
+# To add a profile with mTLS:
+kantrip add <profile> -b <host>:9093 --auth mtls --client-certificate-file client.pem --client-key-file client.key
+
+# To add a profile with a Schema Registry:
+kantrip add <profile> -b <host>:9092 --registry-url http://localhost:8081
+
+# To import a profile from Java or librdkafka client properties:
+kantrip add <profile> --from-properties client.properties
+
+# To import a profile from a Strimzi KafkaUser Secret:
+kubectl get secret <user> -o yaml | kantrip add <profile> --from-strimzi - -b <host>:9093
+
+# To list profiles:
+kantrip list
+
+# To list profiles with a label, as JSON:
+kantrip list -l env=<env> -o json
+
+# To describe a profile (never shows secrets):
+kantrip describe <profile>
+
+# To change the brokers of a profile:
+kantrip edit <profile> -b <host>:9092
+
+# To prompt again for a stored password:
+kantrip edit <profile> --replace-secret kafka.auth.password
+
+# To remove an optional field from a profile:
+kantrip edit <profile> --unset description
+
+# To remove a profile without asking for confirmation:
+kantrip remove <profile> -y
+
+# To check the Kafka and Registry connections of a profile:
+kantrip ping <profile>
+
+# To check installation, vault, credentials, certificates, and clients:
+kantrip doctor
+
+# To repair what doctor found (migrations, credentials, stale sessions):
+kantrip doctor --repair
+
+# To run a client with a profile (kcat, kafka-*, confluent, kaskade, kaf, kcl):
+kantrip exec <profile> -- kcat -L
+kantrip exec <profile> -- kafka-topics --list
+kantrip exec <profile> -- kaskade admin
+
+# To open a subshell where every supported client uses the profile:
+kantrip exec <profile>
+
+# To show the profile of the current subshell (also in $KANTRIP_PROFILE):
+kantrip current
