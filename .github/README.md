@@ -180,7 +180,7 @@ for the full license text.
 - [community cheatsheets][]
 - [Homebrew][]
 
-[LICENSE]: https://github.com/sauljabin/cheatsheets/blob/main/.github/LICENSE
+[LICENSE]: https://github.com/sauljabin/cheatsheets/blob/main/LICENSE.md
 [cc0]: https://creativecommons.org/publicdomain/zero/1.0/legalcode
 [cheat]: https://github.com/cheat/cheat
 [docopt]: https://docopt.org
